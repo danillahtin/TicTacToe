@@ -23,4 +23,10 @@ final class FieldTests: XCTestCase {
     func test_initWithZeroSize_makeNil() {
         XCTAssertNil(Field(size: 0))
     }
+
+    func test_initWithNegativeSize_makeNil() {
+        XCTAssertNil(Field(size: -1))
+        XCTAssertNil(Field(size: -2))
+        XCTAssertNil(Field(size: -3))
+    }
 }
