@@ -9,11 +9,14 @@
 import XCTest
 
 final class Field {
+    init(size: Int) {
 
+    }
 }
 
 final class FieldTests: XCTestCase {
-    func test_init() {
-        let field = Field()
+    func test_initWithSize_makesFieldWithSize() {
+        _ = Field(size: 3)
+        _ = Field(size: 5)
     }
 }
