@@ -9,6 +9,10 @@
 import XCTest
 
 final class Field {
+    enum Error: Swift.Error {
+        case invalidCoordinate
+    }
+
     struct Coordinate: Hashable {
         let x: Int
         let y: Int
@@ -20,15 +24,22 @@ final class Field {
         case zero
     }
 
+    private let size: Int
     private var values: [Coordinate: Value] = [:]
 
     init?(size: Int) {
         guard size > 0 else {
             return nil
         }
+
+        self.size = size
     }
 
-    func value(at coordinate: Coordinate) -> Value {
+    func value(at coordinate: Coordinate) throws -> Value {
+        if coordinate.x < 0 || coordinate.y < 0 || coordinate.x >= size || coordinate.y >= size {
+            throw Error.invalidCoordinate
+        }
+
         return values[coordinate] ?? .empty
     }
 
@@ -54,41 +65,73 @@ final class FieldTests: XCTestCase {
     func test_initialStateIsEmpty() {
         let field = Field(size: 2)!
 
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 0)), .empty)
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 1)), .empty)
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 0)), .empty)
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 1)), .empty)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 0)), .empty)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 1)), .empty)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 0)), .empty)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 1)), .empty)
+    }
+
+    func test_getValueOutsideField_throwsInvalidCoordinateError() {
+        let field = Field(size: 2)!
+
+        assertValue(from: field, at: .init(x: -1, y: 0), throws: .invalidCoordinate)
+        assertValue(from: field, at: .init(x: 0, y: -1), throws: .invalidCoordinate)
+        assertValue(from: field, at: .init(x: -1, y: -1), throws: .invalidCoordinate)
+        assertValue(from: field, at: .init(x: 3, y: 0), throws: .invalidCoordinate)
+        assertValue(from: field, at: .init(x: 0, y: 3), throws: .invalidCoordinate)
+        assertValue(from: field, at: .init(x: 3, y: 3), throws: .invalidCoordinate)
     }
 
     func test_putCrossAtCoordinate_putsCross() {
         let field = Field(size: 2)!
 
         field.put(.cross, at: .init(x: 0, y: 0))
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 0)), .cross)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 0)), .cross)
 
         field.put(.cross, at: .init(x: 1, y: 0))
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 0)), .cross)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 0)), .cross)
 
         field.put(.cross, at: .init(x: 0, y: 1))
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 1)), .cross)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 1)), .cross)
 
         field.put(.cross, at: .init(x: 1, y: 1))
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 1)), .cross)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 1)), .cross)
     }
 
     func test_putZeroAtCoordinate_putsZero() {
         let field = Field(size: 2)!
 
         field.put(.zero, at: .init(x: 0, y: 0))
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 0)), .zero)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 0)), .zero)
 
         field.put(.zero, at: .init(x: 1, y: 0))
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 0)), .zero)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 0)), .zero)
 
         field.put(.zero, at: .init(x: 0, y: 1))
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 1)), .zero)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 1)), .zero)
 
         field.put(.zero, at: .init(x: 1, y: 1))
-        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 1)), .zero)
+        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 1)), .zero)
+    }
+
+    // MARK: - Helpers
+
+    func assertValue(
+        from sut: Field,
+        at coordinate: Field.Coordinate,
+        throws expectedError: Field.Error,
+        file: StaticString = #file,
+        line: UInt = #line)
+    {
+        do {
+            let value = try sut.value(at: coordinate)
+            XCTFail("Expected to fail at \(coordinate), got \(value) instead", file: file, line: line)
+        } catch {
+            if let error = error as? Field.Error, error == expectedError {
+                return
+            }
+
+            XCTFail("Expected \(expectedError), got \(error) instead", file: file, line: line)
+        }
     }
 }
