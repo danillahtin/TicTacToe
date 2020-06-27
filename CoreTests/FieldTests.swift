@@ -35,8 +35,14 @@ final class Field {
         self.size = size
     }
 
+    private func isValid(coordinate: Coordinate) -> Bool {
+        let range = (0..<size)
+
+        return range.contains(coordinate.x) && range.contains(coordinate.y)
+    }
+
     func value(at coordinate: Coordinate) throws -> Value {
-        if coordinate.x < 0 || coordinate.y < 0 || coordinate.x >= size || coordinate.y >= size {
+        guard isValid(coordinate: coordinate) else {
             throw Error.invalidCoordinate
         }
 
