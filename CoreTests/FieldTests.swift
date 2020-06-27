@@ -11,6 +11,7 @@ import XCTest
 final class Field {
     enum Error: Swift.Error {
         case invalidCoordinate
+        case coordinateOccupied
     }
 
     struct Coordinate: Hashable {
@@ -50,8 +51,8 @@ final class Field {
     }
 
     func put(_ value: Value, at coordinate: Coordinate) throws {
-        guard isValid(coordinate: coordinate) else {
-            throw Error.invalidCoordinate
+        guard try self.value(at: coordinate) == .empty else {
+            throw Error.coordinateOccupied
         }
 
         values[coordinate] = value
@@ -142,6 +143,22 @@ final class FieldTests: XCTestCase {
 
         try! field.put(.zero, at: makeCoordinate(1, 1))
         XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), .zero)
+    }
+
+    func test_putValueAtNonEmptyCoordinate_throwsCoordinateOccupiedError() {
+        let field = makeSut()
+
+        try! field.put(.zero, at: makeCoordinate(0, 0))
+        assert(throws: .coordinateOccupied, when: { try field.put(.zero, at: makeCoordinate(0, 0)) })
+
+        try! field.put(.cross, at: makeCoordinate(1, 0))
+        assert(throws: .coordinateOccupied, when: { try field.put(.zero, at: makeCoordinate(1, 0)) })
+
+        try! field.put(.zero, at: makeCoordinate(0, 1))
+        assert(throws: .coordinateOccupied, when: { try field.put(.cross, at: makeCoordinate(0, 1)) })
+
+        try! field.put(.cross, at: makeCoordinate(1, 1))
+        assert(throws: .coordinateOccupied, when: { try field.put(.cross, at: makeCoordinate(1, 1)) })
     }
 
     // MARK: - Helpers
