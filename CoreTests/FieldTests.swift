@@ -10,14 +10,17 @@ import XCTest
 
 final class Field {
     init?(size: Int) {
-        return nil
+        guard size > 0 else {
+            return nil
+        }
     }
 }
 
 final class FieldTests: XCTestCase {
     func test_initWithSize_makesFieldWithSize() {
-        _ = Field(size: 3)
-        _ = Field(size: 5)
+        XCTAssertNotNil(Field(size: 3))
+        XCTAssertNotNil(Field(size: 5))
+        XCTAssertNotNil(Field(size: 6))
     }
 
     func test_initWithZeroOrNegativeSize_makesNil() {
