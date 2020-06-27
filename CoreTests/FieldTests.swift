@@ -67,62 +67,66 @@ final class FieldTests: XCTestCase {
     func test_initialStateIsEmpty() {
         let field = makeSut()
 
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 0)), .empty)
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 1)), .empty)
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 0)), .empty)
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 1)), .empty)
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 0)), .empty)
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 1)), .empty)
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 0)), .empty)
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), .empty)
     }
 
     func test_getValueOutsideField_throwsInvalidCoordinateError() {
         let field = makeSut()
 
-        assertValue(from: field, at: .init(x: -1, y: 0), throws: .invalidCoordinate)
-        assertValue(from: field, at: .init(x: 0, y: -1), throws: .invalidCoordinate)
-        assertValue(from: field, at: .init(x: -1, y: -1), throws: .invalidCoordinate)
-        assertValue(from: field, at: .init(x: 3, y: 0), throws: .invalidCoordinate)
-        assertValue(from: field, at: .init(x: 0, y: 3), throws: .invalidCoordinate)
-        assertValue(from: field, at: .init(x: 3, y: 3), throws: .invalidCoordinate)
+        assertValue(from: field, at: makeCoordinate(-1, 0), throws: .invalidCoordinate)
+        assertValue(from: field, at: makeCoordinate(0, -1), throws: .invalidCoordinate)
+        assertValue(from: field, at: makeCoordinate(-1, -1), throws: .invalidCoordinate)
+        assertValue(from: field, at: makeCoordinate(3, 0), throws: .invalidCoordinate)
+        assertValue(from: field, at: makeCoordinate(0, 3), throws: .invalidCoordinate)
+        assertValue(from: field, at: makeCoordinate(3, 3), throws: .invalidCoordinate)
     }
 
     func test_putCrossAtCoordinate_putsCross() {
         let field = makeSut()
 
-        field.put(.cross, at: .init(x: 0, y: 0))
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 0)), .cross)
+        field.put(.cross, at: makeCoordinate(0, 0))
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 0)), .cross)
 
-        field.put(.cross, at: .init(x: 1, y: 0))
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 0)), .cross)
+        field.put(.cross, at: makeCoordinate(1, 0))
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 0)), .cross)
 
-        field.put(.cross, at: .init(x: 0, y: 1))
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 1)), .cross)
+        field.put(.cross, at: makeCoordinate(0, 1))
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 1)), .cross)
 
-        field.put(.cross, at: .init(x: 1, y: 1))
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 1)), .cross)
+        field.put(.cross, at: makeCoordinate(1, 1))
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), .cross)
     }
 
     func test_putZeroAtCoordinate_putsZero() {
         let field = makeSut()
 
-        field.put(.zero, at: .init(x: 0, y: 0))
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 0)), .zero)
+        field.put(.zero, at: makeCoordinate(0, 0))
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 0)), .zero)
 
-        field.put(.zero, at: .init(x: 1, y: 0))
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 0)), .zero)
+        field.put(.zero, at: makeCoordinate(1, 0))
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 0)), .zero)
 
-        field.put(.zero, at: .init(x: 0, y: 1))
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 1)), .zero)
+        field.put(.zero, at: makeCoordinate(0, 1))
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 1)), .zero)
 
-        field.put(.zero, at: .init(x: 1, y: 1))
-        XCTAssertEqual(try field.value(at: Field.Coordinate(x: 1, y: 1)), .zero)
+        field.put(.zero, at: makeCoordinate(1, 1))
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), .zero)
     }
 
     // MARK: - Helpers
 
-    func makeSut() -> Field {
+    private func makeSut() -> Field {
         return Field(size: testFieldSize)!
     }
 
-    func assertValue(
+    private func makeCoordinate(_ x: Int, _ y: Int) -> Field.Coordinate {
+        .init(x: x, y: y)
+    }
+
+    private func assertValue(
         from sut: Field,
         at coordinate: Field.Coordinate,
         throws expectedError: Field.Error,
