@@ -49,6 +49,8 @@ final class Field {
 }
 
 final class FieldTests: XCTestCase {
+    private let testFieldSize = 2
+
     func test_initWithSize_makesFieldWithSize() {
         XCTAssertNotNil(Field(size: 3))
         XCTAssertNotNil(Field(size: 5))
@@ -63,7 +65,7 @@ final class FieldTests: XCTestCase {
     }
 
     func test_initialStateIsEmpty() {
-        let field = Field(size: 2)!
+        let field = makeSut()
 
         XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 0)), .empty)
         XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 1)), .empty)
@@ -72,7 +74,7 @@ final class FieldTests: XCTestCase {
     }
 
     func test_getValueOutsideField_throwsInvalidCoordinateError() {
-        let field = Field(size: 2)!
+        let field = makeSut()
 
         assertValue(from: field, at: .init(x: -1, y: 0), throws: .invalidCoordinate)
         assertValue(from: field, at: .init(x: 0, y: -1), throws: .invalidCoordinate)
@@ -83,7 +85,7 @@ final class FieldTests: XCTestCase {
     }
 
     func test_putCrossAtCoordinate_putsCross() {
-        let field = Field(size: 2)!
+        let field = makeSut()
 
         field.put(.cross, at: .init(x: 0, y: 0))
         XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 0)), .cross)
@@ -99,7 +101,7 @@ final class FieldTests: XCTestCase {
     }
 
     func test_putZeroAtCoordinate_putsZero() {
-        let field = Field(size: 2)!
+        let field = makeSut()
 
         field.put(.zero, at: .init(x: 0, y: 0))
         XCTAssertEqual(try field.value(at: Field.Coordinate(x: 0, y: 0)), .zero)
@@ -115,6 +117,10 @@ final class FieldTests: XCTestCase {
     }
 
     // MARK: - Helpers
+
+    func makeSut() -> Field {
+        return Field(size: testFieldSize)!
+    }
 
     func assertValue(
         from sut: Field,
