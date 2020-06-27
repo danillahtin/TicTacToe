@@ -17,6 +17,7 @@ final class Field {
     enum Value {
         case empty
         case cross
+        case zero
     }
 
     private var values: [Coordinate: Value] = [:]
@@ -73,5 +74,21 @@ final class FieldTests: XCTestCase {
 
         field.put(.cross, at: .init(x: 1, y: 1))
         XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 1)), .cross)
+    }
+
+    func test_putZeroAtCoordinate_putsZero() {
+        let field = Field(size: 2)!
+
+        field.put(.zero, at: .init(x: 0, y: 0))
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 0)), .zero)
+
+        field.put(.zero, at: .init(x: 1, y: 0))
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 0)), .zero)
+
+        field.put(.zero, at: .init(x: 0, y: 1))
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 1)), .zero)
+
+        field.put(.zero, at: .init(x: 1, y: 1))
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 1)), .zero)
     }
 }
