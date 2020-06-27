@@ -9,10 +9,23 @@
 import XCTest
 
 final class Field {
+    struct Coordinate {
+        let x: Int
+        let y: Int
+    }
+
+    enum Value {
+        case empty
+    }
+
     init?(size: Int) {
         guard size > 0 else {
             return nil
         }
+    }
+
+    func value(at: Coordinate) -> Value {
+        return .empty
     }
 }
 
@@ -28,5 +41,14 @@ final class FieldTests: XCTestCase {
         XCTAssertNil(Field(size: -1))
         XCTAssertNil(Field(size: -2))
         XCTAssertNil(Field(size: -3))
+    }
+
+    func test_initialStateIsEmpty() {
+        let field = Field(size: 2)!
+
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 0)), .empty)
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 1)), .empty)
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 0)), .empty)
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 1)), .empty)
     }
 }
