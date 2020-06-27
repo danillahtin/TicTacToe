@@ -9,14 +9,17 @@
 import XCTest
 
 final class Field {
-    struct Coordinate {
+    struct Coordinate: Hashable {
         let x: Int
         let y: Int
     }
 
     enum Value {
         case empty
+        case cross
     }
+
+    private var values: [Coordinate: Value] = [:]
 
     init?(size: Int) {
         guard size > 0 else {
@@ -24,8 +27,12 @@ final class Field {
         }
     }
 
-    func value(at: Coordinate) -> Value {
-        return .empty
+    func value(at coordinate: Coordinate) -> Value {
+        return values[coordinate] ?? .empty
+    }
+
+    func put(_ value: Value, at coordinate: Coordinate) {
+        values[coordinate] = value
     }
 }
 
@@ -50,5 +57,21 @@ final class FieldTests: XCTestCase {
         XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 1)), .empty)
         XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 0)), .empty)
         XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 1)), .empty)
+    }
+
+    func test_putCrossAtCoordinate_putsCross() {
+        let field = Field(size: 2)!
+
+        field.put(.cross, at: .init(x: 0, y: 0))
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 0)), .cross)
+
+        field.put(.cross, at: .init(x: 1, y: 0))
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 0)), .cross)
+
+        field.put(.cross, at: .init(x: 0, y: 1))
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 0, y: 1)), .cross)
+
+        field.put(.cross, at: .init(x: 1, y: 1))
+        XCTAssertEqual(field.value(at: Field.Coordinate(x: 1, y: 1)), .cross)
     }
 }
