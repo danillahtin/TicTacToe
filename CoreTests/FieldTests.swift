@@ -82,12 +82,12 @@ final class FieldTests: XCTestCase {
     func test_getValueOutsideField_throwsInvalidCoordinateError() {
         let field = makeSut()
 
-        assertValue(from: field, at: makeCoordinate(-1, 0), throws: .invalidCoordinate)
-        assertValue(from: field, at: makeCoordinate(0, -1), throws: .invalidCoordinate)
-        assertValue(from: field, at: makeCoordinate(-1, -1), throws: .invalidCoordinate)
-        assertValue(from: field, at: makeCoordinate(3, 0), throws: .invalidCoordinate)
-        assertValue(from: field, at: makeCoordinate(0, 3), throws: .invalidCoordinate)
-        assertValue(from: field, at: makeCoordinate(3, 3), throws: .invalidCoordinate)
+        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, 0)) })
+        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(0, -1)) })
+        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, -1)) })
+        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(3, 0)) })
+        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(0, 3)) })
+        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(3, 3)) })
     }
 
     func test_putCrossAtCoordinate_putsCross() {
@@ -132,16 +132,16 @@ final class FieldTests: XCTestCase {
         .init(x: x, y: y)
     }
 
-    private func assertValue(
-        from sut: Field,
-        at coordinate: Field.Coordinate,
+    private func assert(
         throws expectedError: Field.Error,
+        when action: () throws -> (),
         file: StaticString = #file,
         line: UInt = #line)
     {
         do {
-            let value = try sut.value(at: coordinate)
-            XCTFail("Expected to fail at \(coordinate), got \(value) instead", file: file, line: line)
+            try action()
+
+            XCTFail("Expected to throw \(expectedError), got no error instead", file: file, line: line)
         } catch {
             if let error = error as? Field.Error, error == expectedError {
                 return
