@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8B33048324A7893B003C128B /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B33047A24A7893B003C128B /* Core.framework */; };
 		8B33048A24A7893B003C128B /* Core.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B33047C24A7893B003C128B /* Core.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B33049224A789C7003C128B /* FieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B33049124A789C7003C128B /* FieldTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +28,7 @@
 		8B33047D24A7893B003C128B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B33048224A7893B003C128B /* CoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B33048924A7893B003C128B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B33049124A789C7003C128B /* FieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				8B33048924A7893B003C128B /* Info.plist */,
+				8B33049124A789C7003C128B /* FieldTests.swift */,
 			);
 			path = CoreTests;
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 					};
 					8B33048124A7893B003C128B = {
 						CreatedOnToolsVersion = 11.5;
+						LastSwiftMigration = 1150;
 					};
 				};
 			};
@@ -199,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B33049224A789C7003C128B /* FieldTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +386,7 @@
 		8B33048F24A7893B003C128B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = CoreTests/Info.plist;
@@ -391,6 +397,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ios.dev.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -398,6 +405,7 @@
 		8B33049024A7893B003C128B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = CoreTests/Info.plist;
