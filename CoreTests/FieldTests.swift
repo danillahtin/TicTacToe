@@ -20,11 +20,8 @@ final class FieldTests: XCTestCase {
         _ = Field(size: 5)
     }
 
-    func test_initWithZeroSize_makeNil() {
+    func test_initWithZeroOrNegativeSize_makesNil() {
         XCTAssertNil(Field(size: 0))
-    }
-
-    func test_initWithNegativeSize_makeNil() {
         XCTAssertNil(Field(size: -1))
         XCTAssertNil(Field(size: -2))
         XCTAssertNil(Field(size: -3))
