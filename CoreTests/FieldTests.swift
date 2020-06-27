@@ -7,57 +7,7 @@
 //
 
 import XCTest
-
-final class Field {
-    enum Error: Swift.Error {
-        case invalidCoordinate
-        case coordinateOccupied
-    }
-
-    struct Coordinate: Hashable {
-        let x: Int
-        let y: Int
-    }
-
-    enum Value {
-        case empty
-        case cross
-        case zero
-    }
-
-    private let size: Int
-    private var values: [Coordinate: Value] = [:]
-
-    init?(size: Int) {
-        guard size > 0 else {
-            return nil
-        }
-
-        self.size = size
-    }
-
-    private func isValid(coordinate: Coordinate) -> Bool {
-        let range = (0..<size)
-
-        return range.contains(coordinate.x) && range.contains(coordinate.y)
-    }
-
-    func value(at coordinate: Coordinate) throws -> Value {
-        guard isValid(coordinate: coordinate) else {
-            throw Error.invalidCoordinate
-        }
-
-        return values[coordinate] ?? .empty
-    }
-
-    func put(_ value: Value, at coordinate: Coordinate) throws {
-        guard try self.value(at: coordinate) == .empty else {
-            throw Error.coordinateOccupied
-        }
-
-        values[coordinate] = value
-    }
-}
+import Core
 
 final class FieldTests: XCTestCase {
     private let testFieldSize = 2
@@ -168,7 +118,7 @@ final class FieldTests: XCTestCase {
     }
 
     private func makeCoordinate(_ x: Int, _ y: Int) -> Field.Coordinate {
-        .init(x: x, y: y)
+        Field.Coordinate(x: x, y: y)
     }
 
     private func assert(

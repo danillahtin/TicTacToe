@@ -1,0 +1,63 @@
+//
+//  Field.swift
+//  Core
+//
+//  Created by Danil Lahtin on 27.06.2020.
+//  Copyright © 2020 Danil Lahtin. All rights reserved.
+//
+
+public final class Field {
+    public enum Error: Swift.Error {
+        case invalidCoordinate
+        case coordinateOccupied
+    }
+
+    public struct Coordinate: Hashable {
+        public let x: Int
+        public let y: Int
+
+        public init(x: Int, y: Int) {
+            self.x = x
+            self.y = y
+        }
+    }
+
+    public enum Value {
+        case empty
+        case cross
+        case zero
+    }
+
+    private let size: Int
+    private var values: [Coordinate: Value] = [:]
+
+    public init?(size: Int) {
+        guard size > 0 else {
+            return nil
+        }
+
+        self.size = size
+    }
+
+    private func isValid(coordinate: Coordinate) -> Bool {
+        let range = 0..<size
+
+        return range.contains(coordinate.x) && range.contains(coordinate.y)
+    }
+
+    public func value(at coordinate: Coordinate) throws -> Value {
+        guard isValid(coordinate: coordinate) else {
+            throw Error.invalidCoordinate
+        }
+
+        return values[coordinate] ?? .empty
+    }
+
+    public func put(_ value: Value, at coordinate: Coordinate) throws {
+        guard try self.value(at: coordinate) == .empty else {
+            throw Error.coordinateOccupied
+        }
+
+        values[coordinate] = value
+    }
+}
