@@ -110,7 +110,7 @@ final class FieldTests: XCTestCase {
         XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), .cross)
     }
 
-    func test_putCrossOutsideField_throwsInvalidCoordinateError() {
+    func test_putValueOutsideField_throwsInvalidCoordinateError() {
         let field = makeSut()
 
         assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(-1, 0)) })
@@ -119,6 +119,13 @@ final class FieldTests: XCTestCase {
         assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(3, 0)) })
         assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(0, 3)) })
         assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(3, 3)) })
+
+        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(-1, 0)) })
+        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(0, -1)) })
+        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(-1, -1)) })
+        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(3, 0)) })
+        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(0, 3)) })
+        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(3, 3)) })
     }
 
     func test_putZeroAtCoordinate_putsZero() {
