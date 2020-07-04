@@ -23,10 +23,6 @@ final class WinStrategyStub: GameRules {
     }
 }
 
-protocol GameRules {
-    func getWinner() -> Player?
-}
-
 final class Engine {
     enum Error: Swift.Error {
         case gameIsOver
