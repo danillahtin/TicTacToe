@@ -20,7 +20,7 @@ protocol EngineOutput {
     func didFinishGame(with result: GameResult)
 }
 
-final class WinStrategyStub {
+final class WinStrategyStub: GameRules {
     private var stub: Player?
 
     func set(winner: Player?) {
@@ -32,13 +32,17 @@ final class WinStrategyStub {
     }
 }
 
+protocol GameRules {
+    func getWinner() -> Player?
+}
+
 final class Engine {
     enum Error: Swift.Error {
         case gameIsOver
     }
 
     private let field: Core.Field<Player>
-    private let winStrategy: WinStrategyStub
+    private let gameRules: GameRules
     private let output: EngineOutput
     private var isFinished = false
 
@@ -46,11 +50,11 @@ final class Engine {
 
     init(
         field: Core.Field<Player>,
-        winStrategy: WinStrategyStub,
+        gameRules: GameRules,
         output: EngineOutput)
     {
         self.field = field
-        self.winStrategy = winStrategy
+        self.gameRules = gameRules
         self.output = output
     }
 
@@ -61,7 +65,7 @@ final class Engine {
 
         try field.put(.cross, at: .init(x: x, y: y))
 
-        if let winner = winStrategy.getWinner() {
+        if let winner = gameRules.getWinner() {
             isFinished = true
             output.didFinishGame(with: .win(winner))
             return
@@ -263,7 +267,7 @@ final class EngineTests: XCTestCase {
     {
         let sut = Engine(
             field: Field(size: fieldSize)!,
-            winStrategy: winStrategy,
+            gameRules: winStrategy,
             output: engineOutput)
 
         return sut
