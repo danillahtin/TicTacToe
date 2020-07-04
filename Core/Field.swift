@@ -29,7 +29,7 @@ public final class Field {
     }
 
     private let size: Int
-    private var values: [Coordinate: Value] = [:]
+    private var values: [Coordinate: Player] = [:]
 
     public init?(size: Int) {
         guard size > 0 else {
@@ -45,16 +45,16 @@ public final class Field {
         return range.contains(coordinate.x) && range.contains(coordinate.y)
     }
 
-    public func value(at coordinate: Coordinate) throws -> Value {
+    public func value(at coordinate: Coordinate) throws -> Player? {
         guard isValid(coordinate: coordinate) else {
             throw Error.invalidCoordinate
         }
 
-        return values[coordinate] ?? .empty
+        return values[coordinate]
     }
 
     public func put(_ player: Player, at coordinate: Coordinate) throws {
-        guard try self.value(at: coordinate) == .empty else {
+        guard try self.value(at: coordinate) == nil else {
             throw Error.coordinateOccupied
         }
 

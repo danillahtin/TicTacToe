@@ -28,10 +28,10 @@ final class FieldTests: XCTestCase {
     func test_initialStateIsEmpty() {
         let field = makeSut()
 
-        XCTAssertEqual(try field.value(at: makeCoordinate(0, 0)), .empty)
-        XCTAssertEqual(try field.value(at: makeCoordinate(0, 1)), .empty)
-        XCTAssertEqual(try field.value(at: makeCoordinate(1, 0)), .empty)
-        XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), .empty)
+        XCTAssertNil(try field.value(at: makeCoordinate(0, 0)))
+        XCTAssertNil(try field.value(at: makeCoordinate(0, 1)))
+        XCTAssertNil(try field.value(at: makeCoordinate(1, 0)))
+        XCTAssertNil(try field.value(at: makeCoordinate(1, 1)))
     }
 
     func test_getValueOutsideField_throwsInvalidCoordinateError() {
