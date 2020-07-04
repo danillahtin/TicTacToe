@@ -168,6 +168,26 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(engineOutput.retrieved, [.win(.zero)])
     }
 
+    func test_allFieldIsOccupiedAndNoWinner_notifiesTie() {
+        let winStrategy = WinStrategyStub()
+        let engineOutput = EngineOutputSpy()
+        let sut = makeSut(winStrategy: winStrategy, engineOutput: engineOutput)
+
+        try! sut.turn(x: 0, y: 0)
+        try! sut.turn(x: 0, y: 1)
+        try! sut.turn(x: 0, y: 2)
+        try! sut.turn(x: 1, y: 0)
+        try! sut.turn(x: 1, y: 1)
+        try! sut.turn(x: 1, y: 2)
+        try! sut.turn(x: 2, y: 0)
+        try! sut.turn(x: 2, y: 1)
+        XCTAssertEqual(engineOutput.retrieved, [])
+
+        try! sut.turn(x: 2, y: 2)
+
+        XCTAssertEqual(engineOutput.retrieved, [.tie])
+    }
+
     // MARK: - Helpers
 
     private func makeSut(

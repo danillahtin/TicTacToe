@@ -39,6 +39,10 @@ public final class Field<Value> {
         return range.contains(coordinate.x) && range.contains(coordinate.y)
     }
 
+    public func hasCoordinateAvailable() -> Bool {
+        true
+    }
+
     public func value(at coordinate: Coordinate) throws -> Value? {
         guard isValid(coordinate: coordinate) else {
             throw Error.invalidCoordinate

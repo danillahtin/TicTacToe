@@ -114,6 +114,10 @@ final class FieldTests: XCTestCase {
         assert(throws: coordinateOccupied, when: { try field.put(value, at: makeCoordinate(1, 1)) })
     }
 
+    func test_init_hasCoordinateAvailable() {
+        XCTAssertEqual(makeSut().hasCoordinateAvailable(), true)
+    }
+
     // MARK: - Helpers
 
     private func makeSut() -> Field<Void> {
