@@ -9,15 +9,19 @@
 import XCTest
 import Core
 
+private typealias Field = Core.Field<Player>
+
 final class Engine {
     var nextTurn: Player { .cross }
 
     func turn(x: Int, y: Int) throws {
-        throw NSError(domain: "akjshd", code: 0, userInfo: nil)
+        throw Field.Error.invalidCoordinate
     }
 }
 
 final class EngineTests: XCTestCase {
+    private let fieldSize = 3
+
     func test_init() {
         let _ = makeSut()
     }
@@ -26,10 +30,16 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(makeSut().nextTurn, .cross)
     }
 
-    func test_nextTurnWithInvalidCoordinates_throws() {
+    func test_nextTurnWithInvalidCoordinates_throwsInvalidCoordinateError() {
         let sut = makeSut()
+        let invalidCoordinate = Field.Error.invalidCoordinate
 
-        XCTAssertThrowsError(try sut.turn(x: -1, y: -1))
+        assert(throws: invalidCoordinate, when: { try sut.turn(x: -1, y: 0) })
+        assert(throws: invalidCoordinate, when: { try sut.turn(x: 0, y: -1) })
+        assert(throws: invalidCoordinate, when: { try sut.turn(x: -1, y: -1) })
+        assert(throws: invalidCoordinate, when: { try sut.turn(x: fieldSize, y: 0) })
+        assert(throws: invalidCoordinate, when: { try sut.turn(x: 0, y: fieldSize) })
+        assert(throws: invalidCoordinate, when: { try sut.turn(x: fieldSize, y: fieldSize) })
     }
 
     // MARK: - Helpers
