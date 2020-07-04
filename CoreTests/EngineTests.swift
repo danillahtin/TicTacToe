@@ -56,6 +56,10 @@ final class Engine {
             output.didFinishGame(with: .win(winner))
         }
 
+        if !field.hasCoordinateAvailable() {
+            output.didFinishGame(with: .tie)
+        }
+
         switch nextTurn {
         case .cross:
             nextTurn = .zero
@@ -168,7 +172,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(engineOutput.retrieved, [.win(.zero)])
     }
 
-    func test_allFieldIsOccupiedAndNoWinner_notifiesTie() {
+    func test_fieldHasNoCoordinatesAvailableAndNoWinner_notifiesTie() {
         let winStrategy = WinStrategyStub()
         let engineOutput = EngineOutputSpy()
         let sut = makeSut(winStrategy: winStrategy, engineOutput: engineOutput)
