@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B263C0524B0BCC1007E2519 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B263C0424B0BCC1007E2519 /* Player.swift */; };
 		8B33048324A7893B003C128B /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B33047A24A7893B003C128B /* Core.framework */; };
 		8B33048A24A7893B003C128B /* Core.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B33047C24A7893B003C128B /* Core.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B33049224A789C7003C128B /* FieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B33049124A789C7003C128B /* FieldTests.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B263C0424B0BCC1007E2519 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		8B33047A24A7893B003C128B /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B33047C24A7893B003C128B /* Core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Core.h; sourceTree = "<group>"; };
 		8B33047D24A7893B003C128B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				8B33047C24A7893B003C128B /* Core.h */,
 				8B33047D24A7893B003C128B /* Info.plist */,
 				8B33049324A799B9003C128B /* Field.swift */,
+				8B263C0424B0BCC1007E2519 /* Player.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B263C0524B0BCC1007E2519 /* Player.swift in Sources */,
 				8B33049424A799B9003C128B /* Field.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
