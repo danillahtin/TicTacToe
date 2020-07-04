@@ -12,10 +12,17 @@ import Core
 private typealias Field = Core.Field<Player>
 
 final class Engine {
-    var nextTurn: Player { .cross }
+    let field: Core.Field<Player>
+
+    private(set) var nextTurn: Player = .cross
+
+    init(field: Core.Field<Player>) {
+        self.field = field
+    }
 
     func turn(x: Int, y: Int) throws {
-        throw Field.Error.invalidCoordinate
+        try field.put(.cross, at: .init(x: x, y: y))
+        nextTurn = .zero
     }
 }
 
@@ -42,10 +49,18 @@ final class EngineTests: XCTestCase {
         assert(throws: invalidCoordinate, when: { try sut.turn(x: fieldSize, y: fieldSize) })
     }
 
+    func test_nextTurnWithValidCoordinatesAfterInit_changesNextTurnToZero() {
+        let sut = makeSut()
+
+        try! sut.turn(x: 0, y: 0)
+
+        XCTAssertEqual(sut.nextTurn, .zero)
+    }
+
     // MARK: - Helpers
 
     private func makeSut() -> Engine {
-        let sut = Engine()
+        let sut = Engine(field: Field(size: fieldSize)!)
 
         return sut
     }
