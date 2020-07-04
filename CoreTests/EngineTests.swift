@@ -33,9 +33,14 @@ final class WinStrategyStub {
 }
 
 final class Engine {
-    let field: Core.Field<Player>
-    let winStrategy: WinStrategyStub
-    let output: EngineOutput
+    enum Error: Swift.Error {
+        case gameIsOver
+    }
+
+    private let field: Core.Field<Player>
+    private let winStrategy: WinStrategyStub
+    private let output: EngineOutput
+    private var isFinished = false
 
     private(set) var nextTurn: Player = .cross
 
@@ -50,9 +55,14 @@ final class Engine {
     }
 
     func turn(x: Int, y: Int) throws {
+        if isFinished {
+            throw Error.gameIsOver
+        }
+
         try field.put(.cross, at: .init(x: x, y: y))
 
         if let winner = winStrategy.getWinner() {
+            isFinished = true
             output.didFinishGame(with: .win(winner))
             return
         }
@@ -212,6 +222,18 @@ final class EngineTests: XCTestCase {
         try! sut.turn(x: 2, y: 2)
 
         XCTAssertEqual(engineOutput.retrieved, [.win(.cross)])
+    }
+
+    func test_takeTurnAfterWin_throwsGameIsOver() {
+        let winStrategy = WinStrategyStub()
+        let sut = makeSut(winStrategy: winStrategy)
+
+        winStrategy.set(winner: .zero)
+        try! sut.turn(x: 0, y: 0)
+
+        assert(throws: Engine.Error.gameIsOver, when: { try sut.turn(x: 0, y: 0)})
+        assert(throws: Engine.Error.gameIsOver, when: { try sut.turn(x: 0, y: 1)})
+        assert(throws: Engine.Error.gameIsOver, when: { try sut.turn(x: 1, y: 1)})
     }
 
     // MARK: - Helpers
