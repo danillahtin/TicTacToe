@@ -11,17 +11,50 @@ import Core
 
 private typealias Field = Core.Field<Player>
 
+enum GameResult: Hashable {
+    case win(Player)
+    case tie
+}
+
+protocol EngineOutput {
+    func didFinishGame(with result: GameResult)
+}
+
+final class WinStrategyStub {
+    private var stub: Player?
+
+    func set(winner: Player?) {
+        self.stub = winner
+    }
+
+    func getWinner() -> Player? {
+        stub
+    }
+}
+
 final class Engine {
     let field: Core.Field<Player>
+    let winStrategy: WinStrategyStub
+    let output: EngineOutput
 
     private(set) var nextTurn: Player = .cross
 
-    init(field: Core.Field<Player>) {
+    init(
+        field: Core.Field<Player>,
+        winStrategy: WinStrategyStub,
+        output: EngineOutput)
+    {
         self.field = field
+        self.winStrategy = winStrategy
+        self.output = output
     }
 
     func turn(x: Int, y: Int) throws {
         try field.put(.cross, at: .init(x: x, y: y))
+
+        if let winner = winStrategy.getWinner() {
+            output.didFinishGame(with: .win(winner))
+        }
 
         switch nextTurn {
         case .cross:
@@ -103,11 +136,41 @@ final class EngineTests: XCTestCase {
         assert(throws: coordinateOccupied, when: { try sut.turn(x: 1, y: 0) })
     }
 
+    func test_turnsToWin_notifiesWin() {
+        let winStrategy = WinStrategyStub()
+        let engineOutput = EngineOutputSpy()
+        let sut = makeSut(winStrategy: winStrategy, engineOutput: engineOutput)
+
+        try! sut.turn(x: 0, y: 0)
+
+        winStrategy.set(winner: .cross)
+
+        XCTAssertEqual(engineOutput.retrieved, [])
+
+        try! sut.turn(x: 0, y: 2)
+
+        XCTAssertEqual(engineOutput.retrieved, [.win(.cross)])
+    }
+
     // MARK: - Helpers
 
-    private func makeSut() -> Engine {
-        let sut = Engine(field: Field(size: fieldSize)!)
+    private func makeSut(
+        winStrategy: WinStrategyStub = .init(),
+        engineOutput: EngineOutputSpy = .init()) -> Engine
+    {
+        let sut = Engine(
+            field: Field(size: fieldSize)!,
+            winStrategy: winStrategy,
+            output: engineOutput)
 
         return sut
+    }
+
+    private final class EngineOutputSpy: EngineOutput {
+        var retrieved: [GameResult] = []
+
+        func didFinishGame(with result: GameResult) {
+            retrieved.append(result)
+        }
     }
 }
