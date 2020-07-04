@@ -54,6 +54,7 @@ final class Engine {
 
         if let winner = winStrategy.getWinner() {
             output.didFinishGame(with: .win(winner))
+            return
         }
 
         if !field.hasCoordinateAvailable() {
@@ -190,6 +191,27 @@ final class EngineTests: XCTestCase {
         try! sut.turn(x: 2, y: 2)
 
         XCTAssertEqual(engineOutput.retrieved, [.tie])
+    }
+
+    func test_winAndFieldHasNoCoordinatesAvailable_notifiesWin() {
+        let winStrategy = WinStrategyStub()
+        let engineOutput = EngineOutputSpy()
+        let sut = makeSut(winStrategy: winStrategy, engineOutput: engineOutput)
+
+        try! sut.turn(x: 0, y: 0)
+        try! sut.turn(x: 0, y: 1)
+        try! sut.turn(x: 0, y: 2)
+        try! sut.turn(x: 1, y: 0)
+        try! sut.turn(x: 1, y: 1)
+        try! sut.turn(x: 1, y: 2)
+        try! sut.turn(x: 2, y: 0)
+        try! sut.turn(x: 2, y: 1)
+        XCTAssertEqual(engineOutput.retrieved, [])
+
+        winStrategy.set(winner: .cross)
+        try! sut.turn(x: 2, y: 2)
+
+        XCTAssertEqual(engineOutput.retrieved, [.win(.cross)])
     }
 
     // MARK: - Helpers
