@@ -40,7 +40,7 @@ public final class Field<Value> {
     }
 
     public func hasCoordinateAvailable() -> Bool {
-        true
+        values.count < size * size
     }
 
     public func value(at coordinate: Coordinate) throws -> Value? {
