@@ -22,7 +22,13 @@ final class Engine {
 
     func turn(x: Int, y: Int) throws {
         try field.put(.cross, at: .init(x: x, y: y))
-        nextTurn = .zero
+
+        switch nextTurn {
+        case .cross:
+            nextTurn = .zero
+        case .zero:
+            nextTurn = .cross
+        }
     }
 }
 
@@ -49,11 +55,34 @@ final class EngineTests: XCTestCase {
         assert(throws: invalidCoordinate, when: { try sut.turn(x: fieldSize, y: fieldSize) })
     }
 
-    func test_nextTurnWithValidCoordinatesAfterInit_changesNextTurnToZero() {
+    func test_nextTurnWithValidCoordinates_changesNextTurn() {
         let sut = makeSut()
 
         try! sut.turn(x: 0, y: 0)
+        XCTAssertEqual(sut.nextTurn, .zero)
 
+        try! sut.turn(x: 1, y: 0)
+        XCTAssertEqual(sut.nextTurn, .cross)
+
+        try! sut.turn(x: 2, y: 0)
+        XCTAssertEqual(sut.nextTurn, .zero)
+
+        try! sut.turn(x: 0, y: 1)
+        XCTAssertEqual(sut.nextTurn, .cross)
+
+        try! sut.turn(x: 1, y: 1)
+        XCTAssertEqual(sut.nextTurn, .zero)
+
+        try! sut.turn(x: 2, y: 1)
+        XCTAssertEqual(sut.nextTurn, .cross)
+
+        try! sut.turn(x: 0, y: 2)
+        XCTAssertEqual(sut.nextTurn, .zero)
+
+        try! sut.turn(x: 1, y: 2)
+        XCTAssertEqual(sut.nextTurn, .cross)
+
+        try! sut.turn(x: 2, y: 2)
         XCTAssertEqual(sut.nextTurn, .zero)
     }
 
