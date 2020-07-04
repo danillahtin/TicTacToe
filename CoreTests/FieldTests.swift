@@ -38,13 +38,15 @@ final class FieldTests: XCTestCase {
 
     func test_getValueOutsideField_throwsInvalidCoordinateError() {
         let field = makeSut()
+        let invalidCoordinate = Field.Error.invalidCoordinate
 
-        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, 0)) })
-        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(0, -1)) })
-        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, -1)) })
-        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(3, 0)) })
-        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(0, 3)) })
-        assert(throws: .invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(3, 3)) })
+        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, 0)) })
+        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, 0)) })
+        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(0, -1)) })
+        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, -1)) })
+        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(3, 0)) })
+        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(0, 3)) })
+        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(3, 3)) })
     }
 
     func test_putCrossAtCoordinate_putsCross() {
@@ -65,20 +67,21 @@ final class FieldTests: XCTestCase {
 
     func test_putValueOutsideField_throwsInvalidCoordinateError() {
         let field = makeSut()
+        let invalidCoordinate = Field.Error.invalidCoordinate
 
-        assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(-1, 0)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(0, -1)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(-1, -1)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(3, 0)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(0, 3)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(3, 3)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(-1, 0)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(0, -1)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(-1, -1)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(3, 0)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(0, 3)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.cross, at: makeCoordinate(3, 3)) })
 
-        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(-1, 0)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(0, -1)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(-1, -1)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(3, 0)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(0, 3)) })
-        assert(throws: .invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(3, 3)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(-1, 0)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(0, -1)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(-1, -1)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(3, 0)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(0, 3)) })
+        assert(throws: invalidCoordinate, when: { try field.put(.zero, at: makeCoordinate(3, 3)) })
     }
 
     func test_putZeroAtCoordinate_putsZero() {
@@ -99,18 +102,19 @@ final class FieldTests: XCTestCase {
 
     func test_putValueAtNonEmptyCoordinate_throwsCoordinateOccupiedError() {
         let field = makeSut()
+        let coordinateOccupied = Field.Error.coordinateOccupied
 
         try! field.put(.zero, at: makeCoordinate(0, 0))
-        assert(throws: .coordinateOccupied, when: { try field.put(.zero, at: makeCoordinate(0, 0)) })
+        assert(throws: coordinateOccupied, when: { try field.put(.zero, at: makeCoordinate(0, 0)) })
 
         try! field.put(.cross, at: makeCoordinate(1, 0))
-        assert(throws: .coordinateOccupied, when: { try field.put(.zero, at: makeCoordinate(1, 0)) })
+        assert(throws: coordinateOccupied, when: { try field.put(.zero, at: makeCoordinate(1, 0)) })
 
         try! field.put(.zero, at: makeCoordinate(0, 1))
-        assert(throws: .coordinateOccupied, when: { try field.put(.cross, at: makeCoordinate(0, 1)) })
+        assert(throws: coordinateOccupied, when: { try field.put(.cross, at: makeCoordinate(0, 1)) })
 
         try! field.put(.cross, at: makeCoordinate(1, 1))
-        assert(throws: .coordinateOccupied, when: { try field.put(.cross, at: makeCoordinate(1, 1)) })
+        assert(throws: coordinateOccupied, when: { try field.put(.cross, at: makeCoordinate(1, 1)) })
     }
 
     // MARK: - Helpers
@@ -121,24 +125,5 @@ final class FieldTests: XCTestCase {
 
     private func makeCoordinate(_ x: Int, _ y: Int) -> Field.Coordinate {
         Field.Coordinate(x: x, y: y)
-    }
-
-    private func assert(
-        throws expectedError: Field.Error,
-        when action: () throws -> (),
-        file: StaticString = #file,
-        line: UInt = #line)
-    {
-        do {
-            try action()
-
-            XCTFail("Expected to throw \(expectedError), got no error instead", file: file, line: line)
-        } catch {
-            if let error = error as? Field.Error, error == expectedError {
-                return
-            }
-
-            XCTFail("Expected \(expectedError), got \(error) instead", file: file, line: line)
-        }
     }
 }
