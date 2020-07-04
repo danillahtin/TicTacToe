@@ -11,6 +11,10 @@ import Core
 
 final class Engine {
     var nextTurn: Player { .cross }
+
+    func turn(x: Int, y: Int) throws {
+        throw NSError(domain: "akjshd", code: 0, userInfo: nil)
+    }
 }
 
 final class EngineTests: XCTestCase {
@@ -20,6 +24,12 @@ final class EngineTests: XCTestCase {
 
     func test_init_nextTurnIsCross() {
         XCTAssertEqual(makeSut().nextTurn, .cross)
+    }
+
+    func test_nextTurnWithInvalidCoordinates_throws() {
+        let sut = makeSut()
+
+        XCTAssertThrowsError(try sut.turn(x: -1, y: -1))
     }
 
     // MARK: - Helpers
