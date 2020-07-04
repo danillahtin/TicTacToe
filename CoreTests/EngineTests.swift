@@ -57,6 +57,23 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(sut.nextTurn, .zero)
     }
 
+    func test_putValueAtOccupiedCoordinate_throwsCoordinateOccupiedError() {
+        let sut = makeSut()
+        let coordinateOccupied = Field.Error.coordinateOccupied
+
+        try! sut.turn(x: 0, y: 0)
+        assert(throws: coordinateOccupied, when: { try sut.turn(x: 0, y: 0) })
+        assert(throws: coordinateOccupied, when: { try sut.turn(x: 0, y: 0) })
+
+        try! sut.turn(x: 0, y: 1)
+        assert(throws: coordinateOccupied, when: { try sut.turn(x: 0, y: 1) })
+        assert(throws: coordinateOccupied, when: { try sut.turn(x: 0, y: 1) })
+
+        try! sut.turn(x: 1, y: 0)
+        assert(throws: coordinateOccupied, when: { try sut.turn(x: 1, y: 0) })
+        assert(throws: coordinateOccupied, when: { try sut.turn(x: 1, y: 0) })
+    }
+
     // MARK: - Helpers
 
     private func makeSut() -> Engine {
