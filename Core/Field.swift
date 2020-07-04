@@ -52,11 +52,6 @@ public final class Field {
             throw Error.coordinateOccupied
         }
 
-        switch player {
-        case .cross:
-            values[coordinate] = .cross
-        case .zero:
-            values[coordinate] = .zero
-        }
+        values[coordinate] = player
     }
 }
