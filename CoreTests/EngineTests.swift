@@ -11,11 +11,6 @@ import Core
 
 private typealias Field = Core.Field<Player>
 
-
-protocol EngineOutput {
-    func didFinishGame(with result: GameResult)
-}
-
 final class WinStrategyStub: GameRules {
     private var stub: Player?
 
