@@ -11,18 +11,6 @@ import Core
 
 private typealias Field = Core.Field<Player>
 
-final class WinStrategyStub: GameRules {
-    private var stub: Player?
-
-    func set(winner: Player?) {
-        self.stub = winner
-    }
-
-    func getWinner() -> Player? {
-        stub
-    }
-}
-
 final class Engine {
     enum Error: Swift.Error {
         case gameIsOver
@@ -144,13 +132,13 @@ final class EngineTests: XCTestCase {
     }
 
     func test_turnsToWin_notifiesWin() {
-        let winStrategy = WinStrategyStub()
+        let gameRules = GameRulesStub()
         let engineOutput = EngineOutputSpy()
-        let sut = makeSut(winStrategy: winStrategy, engineOutput: engineOutput)
+        let sut = makeSut(gameRules: gameRules, engineOutput: engineOutput)
 
         try! sut.turn(x: 0, y: 0)
 
-        winStrategy.set(winner: .cross)
+        gameRules.set(winner: .cross)
 
         XCTAssertEqual(engineOutput.retrieved, [])
 
@@ -160,13 +148,13 @@ final class EngineTests: XCTestCase {
     }
 
     func test_anotherTurnsToWin_notifiesWin() {
-        let winStrategy = WinStrategyStub()
+        let gameRules = GameRulesStub()
         let engineOutput = EngineOutputSpy()
-        let sut = makeSut(winStrategy: winStrategy, engineOutput: engineOutput)
+        let sut = makeSut(gameRules: gameRules, engineOutput: engineOutput)
 
         try! sut.turn(x: 1, y: 2)
 
-        winStrategy.set(winner: .zero)
+        gameRules.set(winner: .zero)
 
         XCTAssertEqual(engineOutput.retrieved, [])
 
@@ -176,9 +164,9 @@ final class EngineTests: XCTestCase {
     }
 
     func test_fieldHasNoCoordinatesAvailableAndNoWinner_notifiesTie() {
-        let winStrategy = WinStrategyStub()
+        let gameRules = GameRulesStub()
         let engineOutput = EngineOutputSpy()
-        let sut = makeSut(winStrategy: winStrategy, engineOutput: engineOutput)
+        let sut = makeSut(gameRules: gameRules, engineOutput: engineOutput)
 
         try! sut.turn(x: 0, y: 0)
         try! sut.turn(x: 0, y: 1)
@@ -196,9 +184,9 @@ final class EngineTests: XCTestCase {
     }
 
     func test_winAndFieldHasNoCoordinatesAvailable_notifiesWin() {
-        let winStrategy = WinStrategyStub()
+        let gameRules = GameRulesStub()
         let engineOutput = EngineOutputSpy()
-        let sut = makeSut(winStrategy: winStrategy, engineOutput: engineOutput)
+        let sut = makeSut(gameRules: gameRules, engineOutput: engineOutput)
 
         try! sut.turn(x: 0, y: 0)
         try! sut.turn(x: 0, y: 1)
@@ -210,17 +198,17 @@ final class EngineTests: XCTestCase {
         try! sut.turn(x: 2, y: 1)
         XCTAssertEqual(engineOutput.retrieved, [])
 
-        winStrategy.set(winner: .cross)
+        gameRules.set(winner: .cross)
         try! sut.turn(x: 2, y: 2)
 
         XCTAssertEqual(engineOutput.retrieved, [.win(.cross)])
     }
 
     func test_takeTurnAfterWin_throwsGameIsOver() {
-        let winStrategy = WinStrategyStub()
-        let sut = makeSut(winStrategy: winStrategy)
+        let gameRules = GameRulesStub()
+        let sut = makeSut(gameRules: gameRules)
 
-        winStrategy.set(winner: .zero)
+        gameRules.set(winner: .zero)
         try! sut.turn(x: 0, y: 0)
 
         assert(throws: Engine.Error.gameIsOver, when: { try sut.turn(x: 0, y: 0)})
@@ -249,12 +237,12 @@ final class EngineTests: XCTestCase {
     // MARK: - Helpers
 
     private func makeSut(
-        winStrategy: WinStrategyStub = .init(),
+        gameRules: GameRulesStub = .init(),
         engineOutput: EngineOutputSpy = .init()) -> Engine
     {
         let sut = Engine(
             field: Field(size: fieldSize)!,
-            gameRules: winStrategy,
+            gameRules: gameRules,
             output: engineOutput)
 
         return sut
@@ -265,6 +253,18 @@ final class EngineTests: XCTestCase {
 
         func didFinishGame(with result: GameResult) {
             retrieved.append(result)
+        }
+    }
+
+    private final class GameRulesStub: GameRules {
+        private var stub: Player?
+
+        func set(winner: Player?) {
+            self.stub = winner
+        }
+
+        func getWinner() -> Player? {
+            stub
         }
     }
 }
