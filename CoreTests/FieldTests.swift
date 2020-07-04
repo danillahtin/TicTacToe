@@ -39,14 +39,15 @@ final class FieldTests: XCTestCase {
     func test_getValueOutsideField_throwsInvalidCoordinateError() {
         let field = makeSut()
         let invalidCoordinate = Field.Error.invalidCoordinate
+        let getValue = { _ = try field.value(at: self.makeCoordinate($0, $1)) }
 
-        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, 0)) })
-        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, 0)) })
-        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(0, -1)) })
-        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(-1, -1)) })
-        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(3, 0)) })
-        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(0, 3)) })
-        assert(throws: invalidCoordinate, when: { _ = try field.value(at: makeCoordinate(3, 3)) })
+        assert(throws: invalidCoordinate, when: { try getValue(-1, 0) })
+        assert(throws: invalidCoordinate, when: { try getValue(-1, 0) })
+        assert(throws: invalidCoordinate, when: { try getValue(0, -1) })
+        assert(throws: invalidCoordinate, when: { try getValue(-1, -1) })
+        assert(throws: invalidCoordinate, when: { try getValue(3, 0) })
+        assert(throws: invalidCoordinate, when: { try getValue(0, 3) })
+        assert(throws: invalidCoordinate, when: { try getValue(3, 3) })
     }
 
     func test_putCrossAtCoordinate_putsCross() {
