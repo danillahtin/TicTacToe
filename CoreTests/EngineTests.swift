@@ -152,6 +152,22 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(engineOutput.retrieved, [.win(.cross)])
     }
 
+    func test_anotherTurnsToWin_notifiesWin() {
+        let winStrategy = WinStrategyStub()
+        let engineOutput = EngineOutputSpy()
+        let sut = makeSut(winStrategy: winStrategy, engineOutput: engineOutput)
+
+        try! sut.turn(x: 1, y: 2)
+
+        winStrategy.set(winner: .zero)
+
+        XCTAssertEqual(engineOutput.retrieved, [])
+
+        try! sut.turn(x: 2, y: 2)
+
+        XCTAssertEqual(engineOutput.retrieved, [.win(.zero)])
+    }
+
     // MARK: - Helpers
 
     private func makeSut(
