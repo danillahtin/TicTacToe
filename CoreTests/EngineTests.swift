@@ -68,6 +68,7 @@ final class Engine {
         }
 
         if !field.hasCoordinateAvailable() {
+            isFinished = true
             output.didFinishGame(with: .tie)
         }
 
@@ -230,6 +231,24 @@ final class EngineTests: XCTestCase {
 
         winStrategy.set(winner: .zero)
         try! sut.turn(x: 0, y: 0)
+
+        assert(throws: Engine.Error.gameIsOver, when: { try sut.turn(x: 0, y: 0)})
+        assert(throws: Engine.Error.gameIsOver, when: { try sut.turn(x: 0, y: 1)})
+        assert(throws: Engine.Error.gameIsOver, when: { try sut.turn(x: 1, y: 1)})
+    }
+
+    func test_takeTurnAfterTie_throwsGameIsOver() {
+        let sut = makeSut()
+
+        try! sut.turn(x: 0, y: 0)
+        try! sut.turn(x: 0, y: 1)
+        try! sut.turn(x: 0, y: 2)
+        try! sut.turn(x: 1, y: 0)
+        try! sut.turn(x: 1, y: 1)
+        try! sut.turn(x: 1, y: 2)
+        try! sut.turn(x: 2, y: 0)
+        try! sut.turn(x: 2, y: 1)
+        try! sut.turn(x: 2, y: 2)
 
         assert(throws: Engine.Error.gameIsOver, when: { try sut.turn(x: 0, y: 0)})
         assert(throws: Engine.Error.gameIsOver, when: { try sut.turn(x: 0, y: 1)})
