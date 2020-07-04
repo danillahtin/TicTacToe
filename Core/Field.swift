@@ -22,12 +22,6 @@ public final class Field {
         }
     }
 
-    public enum Value {
-        case empty
-        case cross
-        case zero
-    }
-
     private let size: Int
     private var values: [Coordinate: Player] = [:]
 
