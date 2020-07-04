@@ -6,7 +6,7 @@
 //  Copyright © 2020 Danil Lahtin. All rights reserved.
 //
 
-public final class Field<Player> {
+public final class Field<Value> {
     public enum Error: Swift.Error {
         case invalidCoordinate
         case coordinateOccupied
@@ -23,7 +23,7 @@ public final class Field<Player> {
     }
 
     private let size: Int
-    private var values: [Coordinate: Player] = [:]
+    private var values: [Coordinate: Value] = [:]
 
     public init?(size: Int) {
         guard size > 0 else {
@@ -39,7 +39,7 @@ public final class Field<Player> {
         return range.contains(coordinate.x) && range.contains(coordinate.y)
     }
 
-    public func value(at coordinate: Coordinate) throws -> Player? {
+    public func value(at coordinate: Coordinate) throws -> Value? {
         guard isValid(coordinate: coordinate) else {
             throw Error.invalidCoordinate
         }
@@ -47,7 +47,7 @@ public final class Field<Player> {
         return values[coordinate]
     }
 
-    public func put(_ player: Player, at coordinate: Coordinate) throws {
+    public func put(_ player: Value, at coordinate: Coordinate) throws {
         guard try self.value(at: coordinate) == nil else {
             throw Error.coordinateOccupied
         }
