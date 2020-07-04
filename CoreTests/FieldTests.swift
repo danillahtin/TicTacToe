@@ -9,18 +9,20 @@
 import XCTest
 import Core
 
-private typealias Field = Core.Field<Player>
-
 final class FieldTests: XCTestCase {
     private let fieldSize = 2
 
     func test_initWithSize_makesFieldWithSize() {
+        typealias Field = Core.Field<Void>
+
         XCTAssertNotNil(Field(size: 3))
         XCTAssertNotNil(Field(size: 5))
         XCTAssertNotNil(Field(size: 6))
     }
 
     func test_initWithZeroOrNegativeSize_makesNil() {
+        typealias Field = Core.Field<Void>
+
         XCTAssertNil(Field(size: 0))
         XCTAssertNil(Field(size: -1))
         XCTAssertNil(Field(size: -2))
@@ -38,7 +40,7 @@ final class FieldTests: XCTestCase {
 
     func test_getValueOutsideField_throwsInvalidCoordinateError() {
         let field = makeSut()
-        let invalidCoordinate = Field.Error.invalidCoordinate
+        let invalidCoordinate = Field<Void>.Error.invalidCoordinate
         let getValue = { _ = try field.value(at: self.makeCoordinate($0, $1)) }
 
         assert(throws: invalidCoordinate, when: { try getValue(-1, 0) })
@@ -50,81 +52,79 @@ final class FieldTests: XCTestCase {
     }
 
     func test_putCrossAtCoordinate_putsCross() {
-        let field = makeSut()
+        let field = makeSutBool()
 
-        try! field.put(.cross, at: makeCoordinate(0, 0))
-        XCTAssertEqual(try field.value(at: makeCoordinate(0, 0)), .cross)
+        try! field.put(true, at: makeCoordinate(0, 0))
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 0)), true)
 
-        try! field.put(.cross, at: makeCoordinate(1, 0))
-        XCTAssertEqual(try field.value(at: makeCoordinate(1, 0)), .cross)
+        try! field.put(true, at: makeCoordinate(1, 0))
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 0)), true)
 
-        try! field.put(.cross, at: makeCoordinate(0, 1))
-        XCTAssertEqual(try field.value(at: makeCoordinate(0, 1)), .cross)
+        try! field.put(true, at: makeCoordinate(0, 1))
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 1)), true)
 
-        try! field.put(.cross, at: makeCoordinate(1, 1))
-        XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), .cross)
+        try! field.put(true, at: makeCoordinate(1, 1))
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), true)
+    }
+
+    func test_putZeroAtCoordinate_putsZero() {
+        let field = makeSutBool()
+
+        try! field.put(false, at: makeCoordinate(0, 0))
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 0)), false)
+
+        try! field.put(false, at: makeCoordinate(1, 0))
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 0)), false)
+
+        try! field.put(false, at: makeCoordinate(0, 1))
+        XCTAssertEqual(try field.value(at: makeCoordinate(0, 1)), false)
+
+        try! field.put(false, at: makeCoordinate(1, 1))
+        XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), false)
     }
 
     func test_putValueOutsideField_throwsInvalidCoordinateError() {
         let field = makeSut()
-        let invalidCoordinate = Field.Error.invalidCoordinate
-        let put = { try field.put($0, at: self.makeCoordinate($1, $2)) }
+        let invalidCoordinate = Field<Void>.Error.invalidCoordinate
+        let put = { try field.put((), at: self.makeCoordinate($0, $1)) }
 
-        assert(throws: invalidCoordinate, when: { try put(.cross, -1, 0) })
-        assert(throws: invalidCoordinate, when: { try put(.cross, 0, -1) })
-        assert(throws: invalidCoordinate, when: { try put(.cross, -1, -1) })
-        assert(throws: invalidCoordinate, when: { try put(.cross, fieldSize, 0) })
-        assert(throws: invalidCoordinate, when: { try put(.cross, 0, fieldSize) })
-        assert(throws: invalidCoordinate, when: { try put(.cross, fieldSize, fieldSize) })
-
-        assert(throws: invalidCoordinate, when: { try put(.zero, -1, 0) })
-        assert(throws: invalidCoordinate, when: { try put(.zero, 0, -1) })
-        assert(throws: invalidCoordinate, when: { try put(.zero, -1, -1) })
-        assert(throws: invalidCoordinate, when: { try put(.zero, fieldSize, 0) })
-        assert(throws: invalidCoordinate, when: { try put(.zero, 0, fieldSize) })
-        assert(throws: invalidCoordinate, when: { try put(.zero, fieldSize, fieldSize) })
-    }
-
-    func test_putZeroAtCoordinate_putsZero() {
-        let field = makeSut()
-
-        try! field.put(.zero, at: makeCoordinate(0, 0))
-        XCTAssertEqual(try field.value(at: makeCoordinate(0, 0)), .zero)
-
-        try! field.put(.zero, at: makeCoordinate(1, 0))
-        XCTAssertEqual(try field.value(at: makeCoordinate(1, 0)), .zero)
-
-        try! field.put(.zero, at: makeCoordinate(0, 1))
-        XCTAssertEqual(try field.value(at: makeCoordinate(0, 1)), .zero)
-
-        try! field.put(.zero, at: makeCoordinate(1, 1))
-        XCTAssertEqual(try field.value(at: makeCoordinate(1, 1)), .zero)
+        assert(throws: invalidCoordinate, when: { try put(-1, 0) })
+        assert(throws: invalidCoordinate, when: { try put(0, -1) })
+        assert(throws: invalidCoordinate, when: { try put(-1, -1) })
+        assert(throws: invalidCoordinate, when: { try put(fieldSize, 0) })
+        assert(throws: invalidCoordinate, when: { try put(0, fieldSize) })
+        assert(throws: invalidCoordinate, when: { try put(fieldSize, fieldSize) })
     }
 
     func test_putValueAtNonEmptyCoordinate_throwsCoordinateOccupiedError() {
         let field = makeSut()
-        let coordinateOccupied = Field.Error.coordinateOccupied
+        let coordinateOccupied = Field<Void>.Error.coordinateOccupied
+        let value: Void = ()
 
-        try! field.put(.zero, at: makeCoordinate(0, 0))
-        assert(throws: coordinateOccupied, when: { try field.put(.zero, at: makeCoordinate(0, 0)) })
+        try! field.put(value, at: makeCoordinate(0, 0))
+        assert(throws: coordinateOccupied, when: { try field.put(value, at: makeCoordinate(0, 0)) })
 
-        try! field.put(.cross, at: makeCoordinate(1, 0))
-        assert(throws: coordinateOccupied, when: { try field.put(.zero, at: makeCoordinate(1, 0)) })
+        try! field.put(value, at: makeCoordinate(1, 0))
+        assert(throws: coordinateOccupied, when: { try field.put(value, at: makeCoordinate(1, 0)) })
 
-        try! field.put(.zero, at: makeCoordinate(0, 1))
-        assert(throws: coordinateOccupied, when: { try field.put(.cross, at: makeCoordinate(0, 1)) })
+        try! field.put(value, at: makeCoordinate(0, 1))
+        assert(throws: coordinateOccupied, when: { try field.put(value, at: makeCoordinate(0, 1)) })
 
-        try! field.put(.cross, at: makeCoordinate(1, 1))
-        assert(throws: coordinateOccupied, when: { try field.put(.cross, at: makeCoordinate(1, 1)) })
+        try! field.put(value, at: makeCoordinate(1, 1))
+        assert(throws: coordinateOccupied, when: { try field.put(value, at: makeCoordinate(1, 1)) })
     }
 
     // MARK: - Helpers
 
-    private func makeSut() -> Field {
+    private func makeSut() -> Field<Void> {
         return Field(size: fieldSize)!
     }
 
-    private func makeCoordinate(_ x: Int, _ y: Int) -> Field.Coordinate {
-        Field.Coordinate(x: x, y: y)
+    private func makeSutBool() -> Field<Bool> {
+        return Field(size: fieldSize)!
+    }
+
+    private func makeCoordinate<T>(_ x: Int, _ y: Int) -> Field<T>.Coordinate {
+        Field<T>.Coordinate(x: x, y: y)
     }
 }
