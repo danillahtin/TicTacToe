@@ -11,55 +11,6 @@ import Core
 
 private typealias Field = Core.Field<Player>
 
-final class Engine {
-    enum Error: Swift.Error {
-        case gameIsOver
-    }
-
-    private let field: Core.Field<Player>
-    private let gameRules: GameRules
-    private let output: EngineOutput
-    private var isFinished = false
-
-    private(set) var nextTurn: Player = .cross
-
-    init(
-        field: Core.Field<Player>,
-        gameRules: GameRules,
-        output: EngineOutput)
-    {
-        self.field = field
-        self.gameRules = gameRules
-        self.output = output
-    }
-
-    func turn(x: Int, y: Int) throws {
-        if isFinished {
-            throw Error.gameIsOver
-        }
-
-        try field.put(.cross, at: .init(x: x, y: y))
-
-        if let winner = gameRules.getWinner() {
-            isFinished = true
-            output.didFinishGame(with: .win(winner))
-            return
-        }
-
-        if !field.hasCoordinateAvailable() {
-            isFinished = true
-            output.didFinishGame(with: .tie)
-        }
-
-        switch nextTurn {
-        case .cross:
-            nextTurn = .zero
-        case .zero:
-            nextTurn = .cross
-        }
-    }
-}
-
 final class EngineTests: XCTestCase {
     private let fieldSize = 3
 
