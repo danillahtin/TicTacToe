@@ -14,6 +14,7 @@
 		8B33048A24A7893B003C128B /* Core.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B33047C24A7893B003C128B /* Core.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B33049224A789C7003C128B /* FieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B33049124A789C7003C128B /* FieldTests.swift */; };
 		8B33049424A799B9003C128B /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B33049324A799B9003C128B /* Field.swift */; };
+		8B67C5AB24B0D96A007C3EC9 /* GameResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B67C5AA24B0D96A007C3EC9 /* GameResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 		8B33048924A7893B003C128B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B33049124A789C7003C128B /* FieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldTests.swift; sourceTree = "<group>"; };
 		8B33049324A799B9003C128B /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
+		8B67C5AA24B0D96A007C3EC9 /* GameResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				8B33047D24A7893B003C128B /* Info.plist */,
 				8B33049324A799B9003C128B /* Field.swift */,
 				8B263C0424B0BCC1007E2519 /* Player.swift */,
+				8B67C5AA24B0D96A007C3EC9 /* GameResult.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 			files = (
 				8B263C0524B0BCC1007E2519 /* Player.swift in Sources */,
 				8B33049424A799B9003C128B /* Field.swift in Sources */,
+				8B67C5AB24B0D96A007C3EC9 /* GameResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

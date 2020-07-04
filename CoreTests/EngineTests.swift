@@ -11,10 +11,6 @@ import Core
 
 private typealias Field = Core.Field<Player>
 
-enum GameResult: Hashable {
-    case win(Player)
-    case tie
-}
 
 protocol EngineOutput {
     func didFinishGame(with result: GameResult)
