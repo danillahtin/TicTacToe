@@ -53,11 +53,16 @@ public final class Field {
         return values[coordinate] ?? .empty
     }
 
-    public func put(_ value: Value, at coordinate: Coordinate) throws {
+    public func put(_ player: Player, at coordinate: Coordinate) throws {
         guard try self.value(at: coordinate) == .empty else {
             throw Error.coordinateOccupied
         }
 
-        values[coordinate] = value
+        switch player {
+        case .cross:
+            values[coordinate] = .cross
+        case .zero:
+            values[coordinate] = .zero
+        }
     }
 }
