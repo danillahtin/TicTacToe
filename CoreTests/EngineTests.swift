@@ -7,14 +7,19 @@
 //
 
 import XCTest
+import Core
 
 final class Engine {
-    
+    var nextTurn: Player { .cross }
 }
 
 final class EngineTests: XCTestCase {
     func test_init() {
         let _ = makeSut()
+    }
+
+    func test_init_nextTurnIsCross() {
+        XCTAssertEqual(makeSut().nextTurn, .cross)
     }
 
     // MARK: - Helpers
