@@ -9,6 +9,8 @@
 import XCTest
 import Core
 
+typealias Field = Core.Field<Player>
+
 final class FieldTests: XCTestCase {
     private let testFieldSize = 2
 

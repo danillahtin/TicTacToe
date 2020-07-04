@@ -6,7 +6,7 @@
 //  Copyright © 2020 Danil Lahtin. All rights reserved.
 //
 
-public final class Field {
+public final class Field<Player> {
     public enum Error: Swift.Error {
         case invalidCoordinate
         case coordinateOccupied
