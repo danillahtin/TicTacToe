@@ -14,14 +14,6 @@ private typealias Field = Core.Field<Player>
 final class EngineTests: XCTestCase {
     private let fieldSize = 3
 
-    func test_init() {
-        let _ = makeSut()
-    }
-
-    func test_init_nextTurnIsCross() {
-        XCTAssertEqual(makeSut().nextTurn, .cross)
-    }
-
     func test_nextTurnWithInvalidCoordinates_throwsInvalidCoordinateError() {
         let sut = makeSut()
         let invalidCoordinate = Field.Error.invalidCoordinate
@@ -36,6 +28,8 @@ final class EngineTests: XCTestCase {
 
     func test_nextTurnWithValidCoordinates_changesNextTurn() {
         let sut = makeSut()
+
+        XCTAssertEqual(sut.nextTurn, .cross)
 
         try! sut.turn(x: 0, y: 0)
         XCTAssertEqual(sut.nextTurn, .zero)
