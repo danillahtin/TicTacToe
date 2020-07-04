@@ -12,7 +12,7 @@ import Core
 private typealias Field = Core.Field<Player>
 
 final class FieldTests: XCTestCase {
-    private let testFieldSize = 2
+    private let fieldSize = 2
 
     func test_initWithSize_makesFieldWithSize() {
         XCTAssertNotNil(Field(size: 3))
@@ -42,12 +42,11 @@ final class FieldTests: XCTestCase {
         let getValue = { _ = try field.value(at: self.makeCoordinate($0, $1)) }
 
         assert(throws: invalidCoordinate, when: { try getValue(-1, 0) })
-        assert(throws: invalidCoordinate, when: { try getValue(-1, 0) })
         assert(throws: invalidCoordinate, when: { try getValue(0, -1) })
         assert(throws: invalidCoordinate, when: { try getValue(-1, -1) })
-        assert(throws: invalidCoordinate, when: { try getValue(3, 0) })
-        assert(throws: invalidCoordinate, when: { try getValue(0, 3) })
-        assert(throws: invalidCoordinate, when: { try getValue(3, 3) })
+        assert(throws: invalidCoordinate, when: { try getValue(fieldSize, 0) })
+        assert(throws: invalidCoordinate, when: { try getValue(0, fieldSize) })
+        assert(throws: invalidCoordinate, when: { try getValue(fieldSize, fieldSize) })
     }
 
     func test_putCrossAtCoordinate_putsCross() {
@@ -74,16 +73,16 @@ final class FieldTests: XCTestCase {
         assert(throws: invalidCoordinate, when: { try put(.cross, -1, 0) })
         assert(throws: invalidCoordinate, when: { try put(.cross, 0, -1) })
         assert(throws: invalidCoordinate, when: { try put(.cross, -1, -1) })
-        assert(throws: invalidCoordinate, when: { try put(.cross, 3, 0) })
-        assert(throws: invalidCoordinate, when: { try put(.cross, 0, 3) })
-        assert(throws: invalidCoordinate, when: { try put(.cross, 3, 3) })
+        assert(throws: invalidCoordinate, when: { try put(.cross, fieldSize, 0) })
+        assert(throws: invalidCoordinate, when: { try put(.cross, 0, fieldSize) })
+        assert(throws: invalidCoordinate, when: { try put(.cross, fieldSize, fieldSize) })
 
         assert(throws: invalidCoordinate, when: { try put(.zero, -1, 0) })
         assert(throws: invalidCoordinate, when: { try put(.zero, 0, -1) })
         assert(throws: invalidCoordinate, when: { try put(.zero, -1, -1) })
-        assert(throws: invalidCoordinate, when: { try put(.zero, 3, 0) })
-        assert(throws: invalidCoordinate, when: { try put(.zero, 0, 3) })
-        assert(throws: invalidCoordinate, when: { try put(.zero, 3, 3) })
+        assert(throws: invalidCoordinate, when: { try put(.zero, fieldSize, 0) })
+        assert(throws: invalidCoordinate, when: { try put(.zero, 0, fieldSize) })
+        assert(throws: invalidCoordinate, when: { try put(.zero, fieldSize, fieldSize) })
     }
 
     func test_putZeroAtCoordinate_putsZero() {
@@ -122,7 +121,7 @@ final class FieldTests: XCTestCase {
     // MARK: - Helpers
 
     private func makeSut() -> Field {
-        return Field(size: testFieldSize)!
+        return Field(size: fieldSize)!
     }
 
     private func makeCoordinate(_ x: Int, _ y: Int) -> Field.Coordinate {
