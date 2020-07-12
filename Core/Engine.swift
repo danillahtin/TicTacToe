@@ -11,14 +11,14 @@ public final class Engine {
         case gameIsOver
     }
 
-    private let field: Core.Field<Player>
+    private let field: Field<Player>
     private let gameRules: GameRules
     private let output: EngineOutput
     private var isFinished = false
     private var nextTurn: Player = .cross
 
     public init(
-        field: Core.Field<Player>,
+        field: Field<Player>,
         gameRules: GameRules,
         output: EngineOutput)
     {
