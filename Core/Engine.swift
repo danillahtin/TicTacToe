@@ -15,8 +15,7 @@ public final class Engine {
     private let gameRules: GameRules
     private let output: EngineOutput
     private var isFinished = false
-
-    public private(set) var nextTurn: Player = .cross
+    private var nextTurn: Player = .cross
 
     public init(
         field: Core.Field<Player>,
