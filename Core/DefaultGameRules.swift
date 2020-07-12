@@ -17,6 +17,30 @@ public final class DefaultGameRules {
         self.winCoordinates = winCoordinates
     }
 
+    private func winner(for coordinates: [Field.Coordinate]) -> Player? {
+        let candidate = coordinates.first.flatMap(player)
+
+        for coordinate in coordinates {
+            if try! field.value(at: coordinate) != candidate {
+                return nil
+            }
+        }
+
+        return candidate
+    }
+
+    private func player(at coordinate: Field.Coordinate) -> Player? {
+        try! field.value(at: coordinate)
+    }
+}
+
+extension DefaultGameRules: GameRules {
+    public func getWinner() -> Player? {
+        winCoordinates.lazy.compactMap(winner).first
+    }
+}
+
+extension DefaultGameRules {
     public static var winCoordinates: [[Field.Coordinate]] {
         [
             [
@@ -60,25 +84,5 @@ public final class DefaultGameRules {
                 Field.Coordinate(x: 0, y: 2),
             ],
         ]
-    }
-
-    public func getWinner() -> Player? {
-        winCoordinates.lazy.compactMap(winner).first
-    }
-
-    private func winner(for coordinates: [Field.Coordinate]) -> Player? {
-        let candidate = coordinates.first.flatMap(player)
-
-        for coordinate in coordinates {
-            if try! field.value(at: coordinate) != candidate {
-                return nil
-            }
-        }
-
-        return candidate
-    }
-
-    private func player(at coordinate: Field.Coordinate) -> Player? {
-        try! field.value(at: coordinate)
     }
 }
