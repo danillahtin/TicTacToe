@@ -19,6 +19,7 @@
 		8B67C5AF24B0D9A0007C3EC9 /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B67C5AE24B0D9A0007C3EC9 /* GameRules.swift */; };
 		8B67C5B124B0DA10007C3EC9 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B67C5B024B0DA10007C3EC9 /* Engine.swift */; };
 		8BA3F69124BB1EBC00707E2B /* DefaultGameRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3F69024BB1EBC00707E2B /* DefaultGameRulesTests.swift */; };
+		8BA3F69324BB3FE000707E2B /* DefaultGameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3F69224BB3FE000707E2B /* DefaultGameRules.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		8B67C5AE24B0D9A0007C3EC9 /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
 		8B67C5B024B0DA10007C3EC9 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		8BA3F69024BB1EBC00707E2B /* DefaultGameRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultGameRulesTests.swift; sourceTree = "<group>"; };
+		8BA3F69224BB3FE000707E2B /* DefaultGameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultGameRules.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 				8B67C5AC24B0D983007C3EC9 /* EngineOutput.swift */,
 				8B67C5AE24B0D9A0007C3EC9 /* GameRules.swift */,
 				8B67C5B024B0DA10007C3EC9 /* Engine.swift */,
+				8BA3F69224BB3FE000707E2B /* DefaultGameRules.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -227,6 +230,7 @@
 				8B67C5AD24B0D983007C3EC9 /* EngineOutput.swift in Sources */,
 				8B67C5B124B0DA10007C3EC9 /* Engine.swift in Sources */,
 				8B263C0524B0BCC1007E2519 /* Player.swift in Sources */,
+				8BA3F69324BB3FE000707E2B /* DefaultGameRules.swift in Sources */,
 				8B33049424A799B9003C128B /* Field.swift in Sources */,
 				8B67C5AB24B0D96A007C3EC9 /* GameResult.swift in Sources */,
 				8B67C5AF24B0D9A0007C3EC9 /* GameRules.swift in Sources */,
