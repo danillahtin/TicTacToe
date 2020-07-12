@@ -69,19 +69,23 @@ final class DefaultGameRules {
     }
 
     func getWinner() -> Player? {
-        winCoordinates
-            .first(where: filledWithSamePlayer)
-            .flatMap({ try! field.value(at: $0.first!) })
+        winCoordinates.lazy.compactMap(winner).first
     }
 
-    private func filledWithSamePlayer(coordinates: [Field.Coordinate]) -> Bool {
-        let players: [Player] = coordinates.compactMap({ try! field.value(at: $0) })
+    private func winner(for coordinates: [Field.Coordinate]) -> Player? {
+        let candidate = coordinates.first.flatMap(player)
 
-        guard players.count == coordinates.count, !players.isEmpty else {
-            return false
+        for coordinate in coordinates {
+            if try! field.value(at: coordinate) != candidate {
+                return nil
+            }
         }
 
-        return players.reduce(true, { $0 && $1 == players.first })
+        return candidate
+    }
+
+    private func player(at coordinate: Field.Coordinate) -> Player? {
+        try! field.value(at: coordinate)
     }
 }
 
