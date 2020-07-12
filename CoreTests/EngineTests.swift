@@ -26,39 +26,6 @@ final class EngineTests: XCTestCase {
         assert(throws: invalidCoordinate, when: { try sut.turn(x: fieldSize, y: fieldSize) })
     }
 
-    func test_nextTurnWithValidCoordinates_changesNextTurn() {
-        let sut = makeSut()
-
-        XCTAssertEqual(sut.nextTurn, .cross)
-
-        try! sut.turn(x: 0, y: 0)
-        XCTAssertEqual(sut.nextTurn, .zero)
-
-        try! sut.turn(x: 1, y: 0)
-        XCTAssertEqual(sut.nextTurn, .cross)
-
-        try! sut.turn(x: 2, y: 0)
-        XCTAssertEqual(sut.nextTurn, .zero)
-
-        try! sut.turn(x: 0, y: 1)
-        XCTAssertEqual(sut.nextTurn, .cross)
-
-        try! sut.turn(x: 1, y: 1)
-        XCTAssertEqual(sut.nextTurn, .zero)
-
-        try! sut.turn(x: 2, y: 1)
-        XCTAssertEqual(sut.nextTurn, .cross)
-
-        try! sut.turn(x: 0, y: 2)
-        XCTAssertEqual(sut.nextTurn, .zero)
-
-        try! sut.turn(x: 1, y: 2)
-        XCTAssertEqual(sut.nextTurn, .cross)
-
-        try! sut.turn(x: 2, y: 2)
-        XCTAssertEqual(sut.nextTurn, .zero)
-    }
-
     func test_nextTurnWithValidCoordinates_makesValidMove() {
         let field = makeField(size: 2)
         let sut = makeSut(field: field)
