@@ -41,12 +41,17 @@ public final class Engine {
             return
         }
 
-        if !field.hasCoordinateAvailable() {
-            isFinished = true
-            output.didFinishGame(with: .tie)
+        checkCoordinateAvailable()
+        switchNextTurn()
+    }
+
+    private func checkCoordinateAvailable() {
+        guard !field.hasCoordinateAvailable() else {
+            return
         }
 
-        switchNextTurn()
+        isFinished = true
+        output.didFinishGame(with: .tie)
     }
 
     private func switchNextTurn() {
