@@ -59,6 +59,44 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(sut.nextTurn, .zero)
     }
 
+    func test_nextTurnWithValidCoordinates_makesValidMove() {
+        let field = makeField(size: 2)
+        let sut = makeSut(field: field)
+
+        XCTAssertNil(field.value(0, 0))
+        XCTAssertNil(field.value(0, 1))
+        XCTAssertNil(field.value(1, 0))
+        XCTAssertNil(field.value(1, 1))
+
+        try! sut.turn(x: 0, y: 0)
+
+        XCTAssertEqual(field.value(0, 0), .cross)
+        XCTAssertNil(field.value(0, 1))
+        XCTAssertNil(field.value(1, 0))
+        XCTAssertNil(field.value(1, 1))
+
+        try! sut.turn(x: 0, y: 1)
+
+        XCTAssertEqual(field.value(0, 0), .cross)
+        XCTAssertEqual(field.value(0, 1), .zero)
+        XCTAssertNil(field.value(1, 0))
+        XCTAssertNil(field.value(1, 1))
+
+        try! sut.turn(x: 1, y: 0)
+
+        XCTAssertEqual(field.value(0, 0), .cross)
+        XCTAssertEqual(field.value(0, 1), .zero)
+        XCTAssertEqual(field.value(1, 0), .cross)
+        XCTAssertNil(field.value(1, 1))
+
+        try! sut.turn(x: 1, y: 1)
+
+        XCTAssertEqual(field.value(0, 0), .cross)
+        XCTAssertEqual(field.value(0, 1), .zero)
+        XCTAssertEqual(field.value(1, 0), .cross)
+        XCTAssertEqual(field.value(1, 1), .zero)
+    }
+
     func test_putValueAtOccupiedCoordinate_throwsCoordinateOccupiedError() {
         let sut = makeSut()
         let coordinateOccupied = Field.Error.coordinateOccupied
@@ -182,15 +220,20 @@ final class EngineTests: XCTestCase {
     // MARK: - Helpers
 
     private func makeSut(
+        field: Field? = nil,
         gameRules: GameRulesStub = .init(),
         engineOutput: EngineOutputSpy = .init()) -> Engine
     {
         let sut = Engine(
-            field: Field(size: fieldSize)!,
+            field: field ?? makeField(),
             gameRules: gameRules,
             output: engineOutput)
 
         return sut
+    }
+
+    private func makeField(size: Int? = nil) -> Field {
+        Field(size: size ?? fieldSize)!
     }
 
     private final class EngineOutputSpy: EngineOutput {
@@ -211,5 +254,11 @@ final class EngineTests: XCTestCase {
         func getWinner() -> Player? {
             stub
         }
+    }
+}
+
+private extension Field {
+    func value(_ x: Int, _ y: Int) -> Player? {
+        try! value(at: .init(x: x, y: y))
     }
 }

@@ -33,7 +33,7 @@ public final class Engine {
         try putNextTurn(x: x, y: y)
 
         if checkHasWinner() { return }
-        
+
         checkCoordinateAvailable()
         switchNextTurn()
     }
@@ -47,7 +47,7 @@ public final class Engine {
     }
 
     private func putNextTurn(x: Int, y: Int) throws {
-        try field.put(.cross, at: .init(x: x, y: y))
+        try field.put(nextTurn, at: .init(x: x, y: y))
     }
 
     private func checkHasWinner() -> Bool {
