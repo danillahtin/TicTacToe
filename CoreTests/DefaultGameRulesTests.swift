@@ -7,9 +7,14 @@
 //
 
 import XCTest
+import Core
+
+private typealias Field = Core.Field<Player>
 
 final class DefaultGameRules {
-    
+    func getWinner() -> Player? {
+        nil
+    }
 }
 
 final class DefaultGameRulesTests: XCTestCase {
@@ -17,9 +22,20 @@ final class DefaultGameRulesTests: XCTestCase {
         let _ = makeSut()
     }
 
+    func test_getWinner_returnsNilWhenFieldIsEmpty() {
+        let field = makeField()
+        let sut = makeSut(field: field)
+
+        XCTAssertNil(sut.getWinner())
+    }
+
     // MARK: - Helpers
 
-    private func makeSut() -> DefaultGameRules {
+    private func makeSut(field: Field? = nil) -> DefaultGameRules {
         DefaultGameRules()
+    }
+
+    private func makeField() -> Field {
+        Field(size: 3)!
     }
 }
