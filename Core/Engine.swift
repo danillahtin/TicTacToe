@@ -46,6 +46,10 @@ public final class Engine {
             output.didFinishGame(with: .tie)
         }
 
+        switchNextTurn()
+    }
+
+    private func switchNextTurn() {
         switch nextTurn {
         case .cross:
             nextTurn = .zero
