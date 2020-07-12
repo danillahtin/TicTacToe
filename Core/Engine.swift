@@ -33,7 +33,7 @@ public final class Engine {
             throw Error.gameIsOver
         }
 
-        try field.put(.cross, at: .init(x: x, y: y))
+        try putNextTurn(x: x, y: y)
 
         if let winner = gameRules.getWinner() {
             isFinished = true
@@ -43,6 +43,10 @@ public final class Engine {
 
         checkCoordinateAvailable()
         switchNextTurn()
+    }
+
+    private func putNextTurn(x: Int, y: Int) throws {
+        try field.put(.cross, at: .init(x: x, y: y))
     }
 
     private func checkCoordinateAvailable() {
