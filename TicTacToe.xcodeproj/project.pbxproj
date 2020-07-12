@@ -18,6 +18,7 @@
 		8B67C5AD24B0D983007C3EC9 /* EngineOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B67C5AC24B0D983007C3EC9 /* EngineOutput.swift */; };
 		8B67C5AF24B0D9A0007C3EC9 /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B67C5AE24B0D9A0007C3EC9 /* GameRules.swift */; };
 		8B67C5B124B0DA10007C3EC9 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B67C5B024B0DA10007C3EC9 /* Engine.swift */; };
+		8BA3F69124BB1EBC00707E2B /* DefaultGameRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA3F69024BB1EBC00707E2B /* DefaultGameRulesTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		8B67C5AC24B0D983007C3EC9 /* EngineOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineOutput.swift; sourceTree = "<group>"; };
 		8B67C5AE24B0D9A0007C3EC9 /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
 		8B67C5B024B0DA10007C3EC9 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		8BA3F69024BB1EBC00707E2B /* DefaultGameRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultGameRulesTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				8B33049124A789C7003C128B /* FieldTests.swift */,
 				8B263C0624B0C02A007E2519 /* EngineTests.swift */,
 				8B263C0824B0C293007E2519 /* XCTestCase+Helpers.swift */,
+				8BA3F69024BB1EBC00707E2B /* DefaultGameRulesTests.swift */,
 			);
 			path = CoreTests;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 				8B33049224A789C7003C128B /* FieldTests.swift in Sources */,
 				8B263C0724B0C02A007E2519 /* EngineTests.swift in Sources */,
 				8B263C0924B0C293007E2519 /* XCTestCase+Helpers.swift in Sources */,
+				8BA3F69124BB1EBC00707E2B /* DefaultGameRulesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
