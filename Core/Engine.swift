@@ -29,10 +29,7 @@ public final class Engine {
     }
 
     public func turn(x: Int, y: Int) throws {
-        if isFinished {
-            throw Error.gameIsOver
-        }
-
+        try checkIsFinished()
         try putNextTurn(x: x, y: y)
 
         if let winner = gameRules.getWinner() {
@@ -43,6 +40,14 @@ public final class Engine {
 
         checkCoordinateAvailable()
         switchNextTurn()
+    }
+
+    private func checkIsFinished() throws {
+        guard isFinished else {
+            return
+        }
+
+        throw Error.gameIsOver
     }
 
     private func putNextTurn(x: Int, y: Int) throws {
