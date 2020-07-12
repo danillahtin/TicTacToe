@@ -32,12 +32,8 @@ public final class Engine {
         try checkIsFinished()
         try putNextTurn(x: x, y: y)
 
-        if let winner = gameRules.getWinner() {
-            isFinished = true
-            output.didFinishGame(with: .win(winner))
-            return
-        }
-
+        if checkHasWinner() { return }
+        
         checkCoordinateAvailable()
         switchNextTurn()
     }
@@ -52,6 +48,17 @@ public final class Engine {
 
     private func putNextTurn(x: Int, y: Int) throws {
         try field.put(.cross, at: .init(x: x, y: y))
+    }
+
+    private func checkHasWinner() -> Bool {
+        guard let winner = gameRules.getWinner() else {
+            return false
+        }
+
+        isFinished = true
+        output.didFinishGame(with: .win(winner))
+
+        return true
     }
 
     private func checkCoordinateAvailable() {
